@@ -1018,3 +1018,37 @@ html,body{max-width:100%;overflow-x:clip}
   .site-footer{padding-bottom:32px}
 }
 @media(max-width:360px){.phone-quick-tabs a{font-size:10px}.phone-quick-tabs a svg{width:18px;height:18px}}
+
+/* FINAL PHONE: horizontal photograph framing, NO elongated full-height portrait.
+   Desktop styling stays untouched; only phone-width rules follow. */
+@media (max-width:700px){
+  html{scroll-padding-top:74px!important}
+  body{padding-bottom:calc(104px + env(safe-area-inset-bottom,0px))!important}
+  .hero-stage{display:flex!important;flex-direction:column!important;grid-template-columns:none!important;height:auto!important;min-height:0!important}
+  .hero-stage>.hero-figure{width:100%!important;height:clamp(300px,94vw,420px)!important;min-height:0!important;overflow:hidden!important;background:#9a633e!important}
+  .hero-stage>.hero-figure picture{display:block!important;height:100%!important;width:100%!important}
+  .hero-stage>.hero-figure img,.hero-stage>.hero-figure picture img{
+    display:block!important;width:100%!important;height:100%!important;
+    aspect-ratio:auto!important;object-fit:cover!important;object-position:center top!important;
+    animation:none!important
+  }
+  .hero-stage>.hero-figure::after{display:none!important}
+  .hero-stage>.hero-wording{padding:16px 15px 69px!important;min-height:0!important}
+  .hero-wording .hero-script-names{margin:5px auto 7px!important;line-height:1.12!important}
+  /* Six COMPLETE navigation labels, always visible in a compact 3 × 2 grid. */
+  .phone-quick-tabs{
+    height:calc(96px + env(safe-area-inset-bottom,0px))!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    grid-template-rows:repeat(2,44px)!important;
+    gap:2px 4px!important;
+    padding:3px 6px calc(4px + env(safe-area-inset-bottom,0px))!important
+  }
+  .phone-quick-tabs a{
+    flex-direction:row!important;gap:5px!important;padding:3px 5px!important;
+    font-size:clamp(10px,2.8vw,12px)!important;
+    line-height:1.04!important;white-space:normal!important;text-wrap:balance!important;
+    text-align:center!important
+  }
+  .phone-quick-tabs a svg{height:17px!important;width:17px!important;flex:0 0 17px!important}
+  .toast{bottom:calc(111px + env(safe-area-inset-bottom,0px))!important}
+}
