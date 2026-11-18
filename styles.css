@@ -1052,3 +1052,37 @@ html,body{max-width:100%;overflow-x:clip}
   .phone-quick-tabs a svg{height:17px!important;width:17px!important;flex:0 0 17px!important}
   .toast{bottom:calc(111px + env(safe-area-inset-bottom,0px))!important}
 }
+
+/* FINAL MOBILE NAVIGATION — six icon-over-label tabs, a single compact row. */
+@media (max-width: 700px) {
+  body { padding-bottom: calc(68px + env(safe-area-inset-bottom, 0px)) !important; }
+  .phone-quick-tabs {
+    display: grid !important;
+    grid-template-columns: repeat(6, minmax(0,1fr)) !important;
+    grid-template-rows: minmax(0, 59px) !important;
+    gap: 0 !important;
+    height: calc(65px + env(safe-area-inset-bottom, 0px)) !important;
+    padding: 3px 3px calc(3px + env(safe-area-inset-bottom, 0px)) !important;
+    align-items: stretch !important;
+  }
+  .phone-quick-tabs a {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    padding: 5px 1px 4px !important;
+    font-size: clamp(9px, 2.7vw, 11px) !important;
+    line-height: 1.05 !important;
+    white-space: nowrap !important;
+    text-wrap: nowrap !important;
+    overflow: hidden !important;
+    min-width: 0 !important;
+    text-align: center !important;
+  }
+  .phone-quick-tabs a svg {
+    width: 20px !important; height: 20px !important; flex: 0 0 20px !important;
+  }
+  .phone-quick-tabs a span {white-space:nowrap!important;display:block!important;max-width:100%;}
+  .toast {bottom:calc(78px + env(safe-area-inset-bottom, 0px)) !important;}
+}

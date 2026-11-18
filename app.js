@@ -105,7 +105,7 @@
      <nav v-if="menuOpen" class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation"><a v-for="item in nav" :key="item.target" :href="'#'+item.target" @click="navClick(item.target)"><Ico :name="item.icon" :size="19"/>{{item.label}}</a></nav>
    </header>
    <nav class="phone-quick-tabs" aria-label="Quick access to wedding sections">
-     <a v-for="item in nav" :key="'quick-'+item.target" :href="'#'+item.target" :class="{'is-active':navSelected===item.target}" @click="navClick(item.target)"><Ico :name="item.icon" :size="21"/><span>{{item.label}}</span></a>
+     <a v-for="item in nav" :key="'quick-'+item.target" :href="'#'+item.target" :class="{'is-active':navSelected===item.target}" @click="navClick(item.target)"><Ico :name="item.icon" :size="21"/><span>{{({home:'Home',couple:'Couple',events:'Events',venue:'Venue',gallery:'Glimpse',invitation:'Invite'})[item.target] || item.label}}</span></a>
    </nav>
    <main>
      <section id="home" class="hero-section">
