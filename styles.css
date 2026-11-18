@@ -984,3 +984,37 @@ html,body{max-width:100%;overflow-x:clip}
   .hero-wording .hero-script-names {flex-direction:column!important;}
   .hero-stage > .hero-wording {padding-bottom:67px!important;}
 }
+
+
+/* Phone-first v2: full height couple portrait and persistent royal section tabs.
+   Desktop layout deliberately remains unchanged. */
+.phone-quick-tabs{display:none}
+@media (max-width:700px){
+  html{scroll-padding-top:68px}
+  body{padding-bottom:calc(69px + env(safe-area-inset-bottom,0px))}
+  .nav-frame{height:62px!important;min-height:62px;width:calc(100% - 24px)!important;gap:8px!important}
+  .brand{width:105px!important;min-width:105px!important;flex-shrink:0!important}
+  .brand-emblem{width:106px!important;height:auto!important;max-height:57px!important;object-fit:contain!important}
+  .menu-btn{height:40px!important;width:42px!important;min-width:42px!important;margin-left:auto!important}
+  .hero-stage{display:flex!important;flex-direction:column!important;height:auto!important;min-height:0!important;grid-template-columns:none!important}
+  .hero-stage>.hero-figure{display:block!important;width:100%!important;height:auto!important;min-height:0!important;background:#b87f57!important;overflow:hidden!important}
+  .hero-stage>.hero-figure picture{display:block!important;width:100%!important;height:auto!important}
+  .hero-stage>.hero-figure img,.hero-stage>.hero-figure picture img{display:block!important;width:100%!important;height:auto!important;object-fit:contain!important;object-position:center center!important;aspect-ratio:1090/1254!important;animation:none!important}
+  .hero-stage>.hero-figure:after{display:none!important}
+  .hero-stage>.hero-wording{min-height:0!important;padding:17px 17px 73px!important;border-top:2px solid #d4a251!important;background:radial-gradient(ellipse at 50% 22%,#fffaf0,#f8e6c6 100%)!important}
+  .hero-artwork-right,.hero-ivory-vine,.hero-lotus-bouquet{display:none!important}
+  .hero-wording .hero-script-names{margin:7px auto 6px!important;gap:6px!important;line-height:1.12!important}
+  .hero-wording .hero-script-names i{display:inline-block!important}
+  .hero-wording .hero-script-person{font-weight:400!important}
+  .hero-wording .hero-invite{margin:9px auto!important;line-height:1.17!important}
+  .countdown-frame{margin-top:-50px!important;margin-bottom:0!important}
+  .countdown-scrolled{min-height:105px!important}
+  .phone-quick-tabs{position:fixed;bottom:0;left:0;right:0;z-index:115;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));align-items:stretch;height:calc(63px + env(safe-area-inset-bottom,0px));padding:4px 3px calc(3px + env(safe-area-inset-bottom,0px));background:linear-gradient(105deg,#400819,#6d1532 50%,#400819);border-top:2px solid #e4b65e;box-shadow:0 -5px 20px #2605136e}
+  .phone-quick-tabs a{min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:5px 0 2px;border-radius:8px;color:#f5e2bf;font-family:var(--serif);font-size:11px;font-weight:700;text-align:center;white-space:nowrap}
+  .phone-quick-tabs a svg{color:#e6ba61;width:19px;height:19px}
+  .phone-quick-tabs a.is-active{background:linear-gradient(160deg,#b57838a8,#76243c80);color:#fff4d8}
+  .phone-quick-tabs a:focus-visible{outline-offset:-3px}
+  .toast{bottom:calc(81px + env(safe-area-inset-bottom,0px))!important;max-width:calc(100vw - 30px)!important;white-space:normal!important}
+  .site-footer{padding-bottom:32px}
+}
+@media(max-width:360px){.phone-quick-tabs a{font-size:10px}.phone-quick-tabs a svg{width:18px;height:18px}}

@@ -104,10 +104,13 @@
      </div>
      <nav v-if="menuOpen" class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation"><a v-for="item in nav" :key="item.target" :href="'#'+item.target" @click="navClick(item.target)"><Ico :name="item.icon" :size="19"/>{{item.label}}</a></nav>
    </header>
+   <nav class="phone-quick-tabs" aria-label="Quick access to wedding sections">
+     <a v-for="item in nav" :key="'quick-'+item.target" :href="'#'+item.target" :class="{'is-active':navSelected===item.target}" @click="navClick(item.target)"><Ico :name="item.icon" :size="21"/><span>{{item.target==='couple'?'Couple':item.target==='events'?'Events':item.target==='gallery'?'Photos':item.target==='invitation'?'Invite':item.label}}</span></a>
+   </nav>
    <main>
      <section id="home" class="hero-section">
        <div class="hero-stage">
-         <div class="hero-figure"><picture><source media="(max-width:700px)" srcset="./assets/royal-couple-mobile.webp"/><img src="./assets/royal-couple-home.webp" alt="Aravind Vas and Vijita Sagari in royal traditional wedding attire" width="1254" height="1254" fetchpriority="high" decoding="async"/></picture></div>
+         <div class="hero-figure"><picture><source media="(max-width:700px)" srcset="./assets/royal-couple-mobile-full.webp"/><img src="./assets/royal-couple-home.webp" alt="Aravind Vas and Vijita Sagari in royal traditional wedding attire" width="1254" height="1254" fetchpriority="high" decoding="async"/></picture></div>
          <div class="hero-wording"><div class="hero-floral-top" aria-hidden="true"></div>
             <img class="hero-ganesha" src="./assets/ganesha-maroon.webp" alt="" aria-hidden="true" width="300" height="327"/>
             <p class="family-name">VEERAGANDHAM’s</p><p class="wedding-word">WEDDING INVITATION</p>
