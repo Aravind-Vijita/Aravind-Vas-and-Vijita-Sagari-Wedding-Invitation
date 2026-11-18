@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 310" width="600" height="310" role="img" aria-labelledby="logo-title">
+<title id="logo-title">A heart V royal gold monogram</title>
+<defs>
+  <linearGradient id="gold" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#fff5c9"/><stop offset=".21" stop-color="#efce7c"/><stop offset=".52" stop-color="#e0a83b"/><stop offset=".78" stop-color="#f7d78b"/><stop offset="1" stop-color="#bf7d2a"/></linearGradient>
+  <linearGradient id="trace" x1="0" x2="1"><stop stop-color="#ac7535" stop-opacity="0"/><stop offset=".5" stop-color="#f6dc9b"/><stop offset="1" stop-color="#ac7535" stop-opacity="0"/></linearGradient>
+  <filter id="glimmer" x="-25%" y="-25%" width="150%" height="150%"><feGaussianBlur stdDeviation="1.5"/></filter>
+</defs>
+<g fill="url(#gold)" stroke="#6d3e24" stroke-width=".7" stroke-linejoin="round">
+<path d="M23 9C46 2 57 0 76 0C144 0 191 36 322 186C401 186 460 185 499 182C497 170 495 158 494 146C492 136 489 115 486 93C484 74 481 56 480 52C477 35 475 19 475 9C475 -4 485 -13 498 -13C502 -13 529 -8 579 1L636 11C643 12 654 14 671 17L687 41C646 38 621 36 613 36C573 36 562 46 562 81C562 145 601 425 633 584L619 594C589 563 587 562 566 562C553 562 548 563 509 569C464 576 438 579 418 579C372 579 324 556 277 510C224 459 201 415 201 362C201 338 204 322 215 293L289 333C273 380 268 403 268 426C268 483 311 517 384 517C395 517 408 516 421 515L445 512C459 511 469 510 476 509C492 507 501 507 528 505L355 281C313 227 248 151 221 125C181 86 151 72 105 72C88 72 79 73 61 79ZM353 227 546 480 505 227Z" transform="translate(40 248) scale(.34 -.34)"/>
+<path d="M424 539C447 550 454 554 469 566C422 572 399 573 367 573C289 573 240 558 191 521C136 479 104 420 104 360C104 333 108 315 122 283L198 325C185 358 181 377 181 405C181 482 232 537 303 537C314 537 329 536 346 534C320 332 281 68 265 -12C293 -7 297 -6 339 4C375 45 382 51 447 120C603 280 683 368 725 424C781 501 809 566 809 621C809 639 807 649 800 668C780 680 772 683 748 685C721 673 710 665 687 645C713 623 722 604 722 570C722 516 689 442 631 367C577 297 538 256 357 80Z" transform="translate(283 260) scale(.34 -.34)"/>
+</g>
+<!-- Gold outlined heart between the two initials -->
+<path d="M 282 133 C 278 124 266 121 261 132 C 253 148 270 163 282 174 C 294 163 311 148 303 132 C 297 121 286 124 282 133 Z" fill="none" stroke="#f3cb6a" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 282 143 C 275 135 269 136 269 143 C 269 148 275 155 282 161 C 291 153 296 147 296 142 C 296 136 289 136 282 143 Z" fill="#eab64d" opacity=".55"/>
+<!-- Delicate underline flourish -->
+<path d="M 142 260 C 188 284 240 286 276 274 M 288 274 C 334 287 392 282 450 260" fill="none" stroke="url(#gold)" stroke-width="3.2" stroke-linecap="round"/>
+<path d="M 160 276 C 188 291 208 292 238 287 M 362 287 C 395 291 421 291 441 277" fill="none" stroke="#d5a758" stroke-width="2" opacity=".75" stroke-linecap="round"/>
+<g transform="translate(283 278)" fill="none" stroke="#f4d487" stroke-width="2.5" stroke-linecap="round">
+ <path d="M0 9 C-4 4 -8 0 0 -11 C8 0 4 4 0 9Z M0 8 C-12 5 -16 -2 -12 -9 C-3 -6 -2 0 0 8Z M0 8 C12 5 16 -2 12 -9 C3 -6 2 0 0 8Z"/>
+</g>
+<circle cx="128" cy="258" r="2.5" fill="#eac476"/><circle cx="465" cy="258" r="2.5" fill="#eac476"/>
+</svg>

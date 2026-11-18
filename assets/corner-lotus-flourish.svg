@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 285 208" fill="none">
+<defs>
+ <linearGradient id="gold" x1="0" y1="0" x2="240" y2="160" gradientUnits="userSpaceOnUse"><stop stop-color="#8E581F"/><stop offset=".34" stop-color="#DBAA51"/><stop offset=".66" stop-color="#F7DF9D"/><stop offset="1" stop-color="#A66D2B"/></linearGradient>
+ <linearGradient id="petal" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#F8DCA5"/><stop offset=".35" stop-color="#E9A1AD"/><stop offset=".72" stop-color="#AC2853"/><stop offset="1" stop-color="#751331"/></linearGradient>
+ <linearGradient id="leaf" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#EDD28E"/><stop offset=".48" stop-color="#C88B35"/><stop offset="1" stop-color="#945923"/></linearGradient>
+ <radialGradient id="jasmine" cx=".36" cy=".25" r=".8"><stop stop-color="#FFFDF1"/><stop offset=".7" stop-color="#F6E2B1"/><stop offset="1" stop-color="#D5A458"/></radialGradient>
+ <filter id="s" x="-25%" y="-25%" width="150%" height="150%"><feDropShadow dx="0" dy="1" stdDeviation="1.3" flood-color="#7D3516" flood-opacity=".23"/></filter>
+ <g id="p"><path d="M0 0C-16-18-13-40 0-59C13-40 16-18 0 0Z" fill="url(#petal)" stroke="url(#gold)" stroke-width="2"/><path d="M0-6Q-6-20 0-44" stroke="#FFE7A4" stroke-width="1.5"/></g>
+ <g id="f"><path d="M0-12Q7-12 6-4Q14-8 14 1Q13 7 6 5Q9 13 0 14Q-7 12-5 6Q-13 9-14 0Q-13-7-6-4Q-7-12 0-12Z" fill="url(#jasmine)" stroke="#BF8B43" stroke-width="1.15"/><circle r="3" fill="#AA314D"/></g>
+</defs>
+<path d="M9 15V163Q9 197 44 197H268" stroke="url(#gold)" stroke-width="2.2" opacity=".79"/>
+<path d="M15 29V160Q15 191 47 191H248" stroke="#F2CB7E" stroke-width="1.15" opacity=".71"/>
+<g stroke="url(#gold)" stroke-width="3" fill="none" stroke-linecap="round">
+ <path d="M23 167Q37 145 52 128Q80 96 115 122Q145 143 176 156Q214 166 260 172"/>
+ <path d="M30 157Q22 127 29 97M39 149Q40 120 55 102M157 148Q161 130 183 115M198 161Q213 141 241 143"/>
+ <path d="M216 166Q228 151 234 158Q238 164 230 167Q224 169 222 164" stroke-width="2"/>
+</g>
+<g fill="url(#leaf)" stroke="#A66C29" stroke-width="1.3" filter="url(#s)">
+ <path d="M34 150Q15 142 23 115Q46 124 34 150Z"/><path d="M40 146Q51 124 70 122Q68 146 40 146Z"/>
+ <path d="M59 120Q53 103 69 87Q83 106 59 120Z"/><path d="M167 150Q162 125 175 116Q191 138 167 150Z"/>
+ <path d="M193 159Q207 137 230 141Q219 162 193 159Z"/><path d="M105 123Q100 104 113 95Q129 113 105 123Z"/>
+</g>
+<g stroke="#FFE8B3" stroke-width="1" opacity=".9"><path d="M33 144 26 122M44 140 65 126M59 112 70 95M171 142 178 123M201 154 225 143"/></g>
+<!-- Warm ruby-pink embossed lotus blossom -->
+<g transform="translate(101 144)" filter="url(#s)">
+ <use href="#p" transform="rotate(0)"/><use href="#p" transform="rotate(-31)"/><use href="#p" transform="rotate(31)"/>
+ <use href="#p" transform="rotate(-63) scale(.81)"/><use href="#p" transform="rotate(63) scale(.81)"/>
+ <use href="#p" transform="rotate(-90) scale(.66)"/><use href="#p" transform="rotate(90) scale(.66)"/>
+ <path d="M-57 0Q-28 20 0 15Q30 20 57 0" stroke="url(#gold)" stroke-width="4" fill="none"/>
+ <circle cy="-2" r="7" fill="#F2BE59" stroke="#AB742F" stroke-width="2"/><circle cx="-3" cy="-5" r="2" fill="#FFF3BD"/>
+</g>
+<use href="#f" x="46" y="182" transform="rotate(14 46 182)"/><use href="#f" x="149" y="179" transform="rotate(-10 149 179) scale(.75) translate(49 59)"/>
+<g fill="#BA7F32"><circle cx="230" cy="171" r="2.8"/><circle cx="239" cy="170" r="1.8"/><circle cx="249" cy="173" r="2.1"/></g>
+</svg>

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="220" height="22" viewBox="0 0 220 22">
+<defs><linearGradient id="fine" x1="0" x2="1"><stop stop-color="#e3ad5d" stop-opacity=".7"/><stop offset=".5" stop-color="#ffdf94"/><stop offset="1" stop-color="#e3ad5d" stop-opacity=".7"/></linearGradient></defs>
+<!-- Continuous slender filigree, repeated across the full width -->
+<g fill="none" stroke="url(#fine)" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round">
+<path d="M0 11H76 M144 11H220" opacity=".62"/>
+<path d="M76 11C85 11 84 4 92 5C98 5 101 11 108 11 M144 11C135 11 136 4 128 5C122 5 119 11 112 11"/>
+<path d="M76 11C85 11 84 18 92 17C98 17 101 11 108 11 M144 11C135 11 136 18 128 17C122 17 119 11 112 11"/>
+</g>
+<path d="M110 3L118 11L110 19L102 11Z" fill="none" stroke="#f6d37a" stroke-width="1.55"/>
+<path d="M110 7L114 11L110 15L106 11Z" fill="#bd7c3f"/><circle cx="75" cy="11" r="2" fill="#efc56c"/><circle cx="145" cy="11" r="2" fill="#efc56c"/>
+<path d="M91 6C91 1 97 2 99 6 M129 6C129 1 123 2 121 6 M91 16C91 21 97 20 99 16 M129 16C129 21 123 20 121 16" stroke="#e2a658" stroke-width=".95" fill="none" opacity=".7"/>
+</svg>
