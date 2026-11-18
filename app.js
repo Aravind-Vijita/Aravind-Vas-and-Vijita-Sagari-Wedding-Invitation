@@ -107,7 +107,7 @@
    <main>
      <section id="home" class="hero-section">
        <div class="hero-stage">
-         <div class="hero-figure"><img src="./assets/royal-couple-home.webp" alt="Aravind Vas and Vijita Sagari in royal traditional wedding attire" width="1200" height="533" fetchpriority="high" decoding="async"/></div>
+         <div class="hero-figure"><picture><source media="(max-width:700px)" srcset="./assets/royal-couple-mobile.webp"/><img src="./assets/royal-couple-home.webp" alt="Aravind Vas and Vijita Sagari in royal traditional wedding attire" width="1254" height="1254" fetchpriority="high" decoding="async"/></picture></div>
          <div class="hero-wording"><div class="hero-floral-top" aria-hidden="true"></div>
             <img class="hero-ganesha" src="./assets/ganesha-maroon.webp" alt="" aria-hidden="true" width="300" height="327"/>
             <p class="family-name">VEERAGANDHAM’s</p><p class="wedding-word">WEDDING INVITATION</p>

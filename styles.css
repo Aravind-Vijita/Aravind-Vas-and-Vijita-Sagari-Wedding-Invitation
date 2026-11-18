@@ -954,3 +954,33 @@ html,body{max-width:100%;overflow-x:clip}
 .couple-reimagined .royal-profile-image img {object-fit:cover;object-position:50% 50%;transform:none;}
 .couple-reimagined .royal-profile:hover .royal-profile-image img {transform:scale(1.03);}
 .hero-stage > .hero-figure img {object-fit:cover;object-position:50% 8%!important;}
+
+/* Phone-first hero — dedicated crop avoids the ivory blank strip on portrait screens. */
+@media (max-width:700px) {
+  .hero-stage {display:grid!important;grid-template-columns:minmax(0,1fr)!important;height:auto!important;overflow:hidden!important;}
+  .hero-stage > .hero-figure {height:clamp(282px,85vw,395px)!important;min-height:0!important;width:100%!important;overflow:hidden!important;}
+  .hero-stage > .hero-figure picture {display:block;width:100%;height:100%;}
+  .hero-stage > .hero-figure picture img {width:100%;height:100%;object-fit:cover!important;object-position:center 22%!important;display:block;}
+  .hero-stage > .hero-wording {min-height:0!important;align-self:auto!important;padding:20px 19px 72px!important;border-top:2px solid #cf9c4c;justify-content:flex-start!important;}
+  .hero-ganesha {width:45px!important;height:45px!important;}
+  .hero-wording .family-name {font-size:17px!important;margin-top:4px!important;}
+  .hero-wording .wedding-word {font-size:12px!important;letter-spacing:2px!important;}
+  .hero-wording .gold-divider {margin:2px auto 7px!important;}
+  .hero-wording .hero-invite {font-size:clamp(17px,4.5vw,20px)!important;line-height:1.12!important;max-width:520px;}
+  .hero-wording .hero-script-names {font-size:clamp(29px,7.5vw,40px)!important;line-height:1.12!important;flex-direction:row!important;gap:5px!important;white-space:normal!important;flex-wrap:wrap!important;}
+  .hero-wording .hero-script-names .hero-script-person {white-space:nowrap;}
+  .hero-wording .hero-script-names i {line-height:1!important;margin:0!important;}
+  .countdown-frame {width:calc(100% - 10px)!important;margin:-58px auto -3px!important;z-index:29;}
+  .countdown-scrolled {min-height:110px!important;padding:10px 8px 11px!important;}
+  .countdown-heading {font-size:clamp(19px,5vw,23px)!important;}
+  .counter-row {gap:7px!important;}
+  .countbox {width:clamp(57px,17.2vw,72px)!important;height:57px!important;}
+  .countbox strong {font-size:29px!important;}
+  .countbox span {font-size:11px!important;}
+}
+@media (max-width:365px){
+  .hero-wording .hero-script-names {font-size:clamp(28px,8.5vw,32px)!important;gap:1px 7px!important;}
+  .hero-wording .hero-script-names i {display:none;}
+  .hero-wording .hero-script-names {flex-direction:column!important;}
+  .hero-stage > .hero-wording {padding-bottom:67px!important;}
+}
