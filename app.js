@@ -59,12 +59,29 @@
    this.timer=setInterval(()=>{this.counter=now()},1000);
    window.addEventListener('scroll',this.handleScroll,{passive:true});window.addEventListener('keydown',this.handleKey);
    this.handleScroll();
+
+   // Intelligent image loading: prioritize hero; warm portraits after it loads.
+   // Full-size gallery and invitation images are fetched only when opened.
+   const warmImg=(src)=>{if(!src)return;const im=new Image();im.decoding='async';im.src=src;};
+   const network=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
+   const constrained=Boolean(network?.saveData||/^(slow-2g|2g)$/.test(network?.effectiveType||''));
+   const warmPortraits=()=>{if(constrained)return;['./assets/groom-royal.webp','./assets/bride-royal-single-bindi.webp'].forEach(warmImg);};
+   const hero=document.querySelector('.hero-figure img');
+   if(hero){if(hero.complete){if('requestIdleCallback' in window)requestIdleCallback(warmPortraits,{timeout:1900});else setTimeout(warmPortraits,450)}else hero.addEventListener('load',()=>{if('requestIdleCallback' in window)requestIdleCallback(warmPortraits,{timeout:1900});else setTimeout(warmPortraits,450)},{once:true});}
+   if('IntersectionObserver' in window){
+     this.preloadObserver=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(!entry.isIntersecting)return;
+       const section=entry.target;
+       section.querySelectorAll('img[loading="lazy"]').forEach(img=>{img.loading='eager';});
+       this.preloadObserver.unobserve(section);
+     })},{rootMargin:'450px 0px',threshold:0});
+     ['couple','venue','gallery','invitation'].forEach(id=>{const section=document.getElementById(id);if(section)this.preloadObserver.observe(section)});
+   }
    if('IntersectionObserver' in window){
     this.observer=new IntersectionObserver(entries=>entries.forEach(en=>{if(en.isIntersecting){en.target.classList.add('appeared');this.observer.unobserve(en.target)}}),{threshold:.08,rootMargin:'0px 0px -30px 0px'});
     document.querySelectorAll('.reveal').forEach(e=>this.observer.observe(e));
    }
   },
-  beforeUnmount(){clearInterval(this.timer);clearTimeout(this.noticeTimer);window.removeEventListener('scroll',this.handleScroll);window.removeEventListener('keydown',this.handleKey);this.observer?.disconnect();document.body.style.overflow=''},
+  beforeUnmount(){clearInterval(this.timer);clearTimeout(this.noticeTimer);window.removeEventListener('scroll',this.handleScroll);window.removeEventListener('keydown',this.handleKey);this.observer?.disconnect();this.preloadObserver?.disconnect();document.body.style.overflow=''},
   methods:{
    handleScroll(){let m=Math.max(1,document.documentElement.scrollHeight-innerHeight);this.progress=Math.round(scrollY/m*100);let ids=['invitation','gallery','venue','events','couple','home'];this.navSelected=ids.find(id=>{let e=document.getElementById(id);return e && e.getBoundingClientRect().top<Math.min(innerHeight*.45,250)})||'home'},
    handleKey(e){if(e.key==='Escape'){this.closeModal();this.galleryModal=false;this.menuOpen=false}if(this.galleryModal&&e.key==='ArrowRight')this.nextGallery();if(this.galleryModal&&e.key==='ArrowLeft')this.prevGallery();if(e.key==='Tab'&&this.modalOpen){let nodes=Array.from(document.querySelectorAll('.invitation-modal button'));if(!nodes.length)return;if(e.shiftKey&&document.activeElement===nodes[0]){e.preventDefault();nodes[nodes.length-1].focus()}else if(!e.shiftKey&&document.activeElement===nodes[nodes.length-1]){e.preventDefault();nodes[0].focus()}}},
@@ -110,7 +127,7 @@
    <main>
      <section id="home" class="hero-section">
        <div class="hero-stage">
-         <div class="hero-figure"><picture><source media="(max-width:700px)" srcset="./assets/royal-couple-mobile-wide.webp"/><img src="./assets/royal-couple-home.webp" alt="Aravind Vas and Vijita Sagari in royal traditional wedding attire" width="1254" height="1254" fetchpriority="high" decoding="async"/></picture></div>
+         <div class="hero-figure"><picture><source media="(max-width:700px)" srcset="./assets/royal-couple-mobile-wide-single-bindi.webp"/><img src="./assets/royal-couple-home-single-bindi.webp" alt="Aravind Vas and Vijita Sagari in royal traditional wedding attire" width="1254" height="1254" loading="eager" fetchpriority="high" decoding="async"/></picture></div>
          <div class="hero-wording"><div class="hero-floral-top" aria-hidden="true"></div>
             <img class="hero-ganesha" src="./assets/ganesha-maroon.webp" alt="" aria-hidden="true" width="300" height="327"/>
             <p class="family-name">VEERAGANDHAM’s</p><p class="wedding-word">WEDDING INVITATION</p>
@@ -157,7 +174,7 @@
              <div class="royal-connector" aria-hidden="true"><span>&amp;</span></div>
              <article class="royal-profile royal-profile-bride reveal">
                <div class="royal-profile-top" aria-hidden="true"><span class="royal-profile-arch"></span></div>
-               <div class="royal-profile-image"><img src="./assets/bride-royal.webp" alt="Royal traditional portrait of Vijita Sagari" width="220" height="220" loading="lazy" decoding="async"/></div>
+               <div class="royal-profile-image"><img src="./assets/bride-royal-single-bindi.webp" alt="Royal traditional portrait of Vijita Sagari" width="220" height="220" loading="lazy" decoding="async"/></div>
                <div class="royal-profile-content">
                  <span class="royal-role">THE BRIDE</span>
                  <h3>Vijita Sagari</h3>
