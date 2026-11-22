@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+<title>Wedding Live Embed Check</title>
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}body{font-family:system-ui,Arial,sans-serif;margin:0;background:#350b1d;color:#fae5c2;padding:24px;line-height:1.55}main{max-width:950px;margin:auto}h1{font:400 2rem Georgia,serif;color:#f4d689}code,pre{word-break:break-all;white-space:pre-wrap;background:#19070f;color:#f8d89c;padding:4px 8px;border-radius:6px}dl{display:grid;grid-template-columns:max-content 1fr;gap:8px 14px}dt{font-weight:bold}dd{margin:0;overflow-wrap:anywhere}button,a{font:600 1rem system-ui,Arial,sans-serif;border-radius:8px;border:1px solid #d3a45c;background:#d7a751;color:#310c20;padding:10px 14px;display:inline-block;cursor:pointer;margin:6px 6px 6px 0}a{background:transparent;color:#f7db9d;text-decoration:none}iframe{width:100%;aspect-ratio:16/9;min-height:225px;border:2px solid #bd975a;border-radius:10px;background:#130916}p{max-width:65ch}small{color:#d9bea3}
+</style></head><body><main>
+<h1>Wedding Live · Embed diagnostic</h1>
+<p>This private troubleshooting page tests the embedded player separately from the Vue website. It does not change the wedding design or host the video itself. If Error 153 occurs here too, inspect the actual request headers or YouTube embedding permission.</p>
+<dl><dt>Page origin</dt><dd id="origin"></dd><dt>Page response Referrer-Policy</dt><dd id="header">Checking…</dd><dt>Document referrer policy</dt><dd id="policy"></dd><dt>Iframe policy</dt><dd><code>strict-origin-when-cross-origin</code></dd><dt>Video</dt><dd><code>GyZOfmaDvRU</code></dd></dl>
+<p><button id="standard">Test standard YouTube embed</button><button id="privacy">Test privacy-enhanced embed</button><a href="https://youtube.com/live/GyZOfmaDvRU?feature=share" target="_blank" rel="noopener">Watch on YouTube</a></p>
+<p id="state">Choose a test above. YouTube video is not loaded until you click.</p>
+<div id="player"></div>
+<h2>How to confirm Error 153</h2>
+<ol><li>Open this page <strong>on your Cloudflare public domain</strong>, not as a local file.</li><li>Click Test standard embed. If it fails, try privacy-enhanced embed.</li><li>On desktop, open DevTools → Network, select the request to <code>youtube.com/embed/GyZOfmaDvRU</code>, and inspect Request Headers → <code>Referer</code>. It should show your Cloudflare site origin.</li><li>If Referer is present and it still fails, confirm the stream is public/unlisted and has <strong>Allow embedding</strong> enabled in YouTube Studio. Also test without privacy/ad-blocking browser extensions.</li></ol>
+<p><small>Note: iframe onload means the frame loaded, not that playback succeeded. This page cannot read cross-origin YouTube's playback status.</small></p>
+</main><script>
+const id='GyZOfmaDvRU';
+document.getElementById('origin').textContent=location.origin;
+document.getElementById('policy').textContent=document.querySelector('meta[name=referrer]').content;
+fetch(location.pathname+'?headercheck='+Date.now(),{method:'HEAD',cache:'no-store'}).then(r=>document.getElementById('header').textContent=r.headers.get('referrer-policy')||'(no Referrer-Policy header reported; browser default may apply)').catch(()=>document.getElementById('header').textContent='Unable to inspect response');
+function test(host){const url=new URL('https://'+host+'/embed/'+id);url.searchParams.set('si','RrZ0RaAnFThISiH0');const frame=document.createElement('iframe');frame.title='Wedding livestream playback test';frame.src=url.href;frame.referrerPolicy='strict-origin-when-cross-origin';frame.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';frame.allowFullscreen=true;document.getElementById('player').replaceChildren(frame);document.getElementById('state').textContent='Embedded player requested from '+host+'.';}
+document.getElementById('standard').onclick=()=>test('www.youtube.com');
+document.getElementById('privacy').onclick=()=>test('www.youtube-nocookie.com');
+</script></body></html>

@@ -1086,3 +1086,61 @@ html,body{max-width:100%;overflow-x:clip}
   .phone-quick-tabs a span {white-space:nowrap!important;display:block!important;max-width:100%;}
   .toast {bottom:calc(78px + env(safe-area-inset-bottom, 0px)) !important;}
 }
+
+
+/* Wedding Live — matches Extended Florals; the YouTube iframe loads on demand only. */
+.wedding-live-section{position:relative;isolation:isolate;padding:78px 0 84px;background:radial-gradient(ellipse at 10% 80%,#8b2d49 0,transparent 41%),radial-gradient(ellipse at 90% 7%,#7b1f3b 0,transparent 39%),linear-gradient(150deg,#4b0a20,#69152f 53%,#42091d);border-top:1px solid #daa65b85;border-bottom:1px solid #d6a15888;color:#fae9d0}
+.wedding-live-container{max-width:1060px;text-align:center}.wedding-live-section .section-title{margin-bottom:9px}
+.wedding-live-intro{font:500 clamp(20px,2.5vw,29px)/1.2 var(--serif);color:#f8e0bd;margin:0 auto 27px}
+.live-player-frame{position:relative;aspect-ratio:16/9;width:min(100%,960px);margin:0 auto;overflow:hidden;background:radial-gradient(ellipse at center,#5d102c,#240513 78%);border:4px double #d8a450;outline:1px solid #e9c782;outline-offset:5px;border-radius:15px;box-shadow:0 20px 48px #1c010e99}
+.live-embedded-player{width:100%;height:100%;display:block;border:0;background:#140511}
+.live-player-cover{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 25px;background:radial-gradient(ellipse at center,#7c1d3a80,#250914 90%),linear-gradient(120deg,#4f0a26,#3c071e);color:#f9e4bd}
+.live-player-cover::before{content:'';position:absolute;inset:12px;pointer-events:none;border:1px solid #e5b96655;border-radius:11px}
+.live-symbol{display:flex;align-items:center;justify-content:center;color:#f2cf80;background:#e7b95d18;border:1px solid #e2b2687a;border-radius:50%;width:70px;height:70px;margin-bottom:15px}
+.live-cover-top{font:700 11px/1.3 var(--sans);letter-spacing:2.2px;text-transform:uppercase;color:#e9bb73}
+.live-player-cover h3{font:500 clamp(35px,5vw,62px)/1.05 var(--serif);margin:11px 0 2px;color:#fff1d5}
+.live-player-cover h3 em{font-weight:400;color:#eac374}
+.live-player-cover p{font:500 clamp(16px,2vw,23px)/1.25 var(--serif);margin:8px 0 19px;max-width:640px}
+.live-play-button,.live-expand-button,.live-youtube-button{display:inline-flex;align-items:center;justify-content:center;gap:11px;min-height:49px;padding:10px 21px;border-radius:999px;font:700 14px var(--sans);transition:background .2s,transform .2s}
+.live-play-button{border:2px solid #f6d787;background:linear-gradient(130deg,#f8dc84,#dea73c);color:#4b1025}
+.live-play-button:hover,.live-expand-button:hover,.live-youtube-button:hover{transform:translateY(-2px)}
+.live-soon-label{border:1px solid #e7ba668a;border-radius:999px;padding:10px 20px;font:700 12px var(--sans);letter-spacing:.6px;color:#ffe0ac}
+.live-actions{display:flex;justify-content:center;align-items:center;gap:15px;flex-wrap:wrap;margin:28px auto 0}
+.live-expand-button{color:#4d152c;border:1px solid #f8dc97;background:linear-gradient(120deg,#ffedae,#e7b75a)}
+.live-youtube-button{background:#5c0c28;border:1px solid #e1b464;color:#ffe9bd}
+.live-small-note{color:#d9ba9f;font:500 14px/1.35 var(--serif);margin:13px auto 0}
+.live-fullscreen-overlay{position:fixed;inset:0;z-index:2000;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:14px;background:#10040d;color:#ffe9c5;padding:calc(12px + env(safe-area-inset-top,0px)) 15px calc(13px + env(safe-area-inset-bottom,0px))}
+.live-fullscreen-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;width:min(100%,1500px);font:700 clamp(15px,2vw,22px) var(--serif)}
+.live-fullscreen-bar button{display:flex;align-items:center;gap:8px;color:#ffefc8;background:#5a1430;border:1px solid #daab64;border-radius:9px;padding:8px 12px}
+.live-fullscreen-video{width:min(100%,1500px);aspect-ratio:16/9;max-height:calc(100dvh - 145px);background:#000;border:2px solid #d0a558;border-radius:8px;overflow:hidden}
+.live-fullscreen-youtube{display:inline-flex;align-items:center;gap:8px;color:#f9ce77;font:700 13px var(--sans)}
+/* Seven bottom tabs still fit one row on phones. The full menu keeps full titles. */
+@media(max-width:1050px) and (min-width:701px){
+ .site-header .desktop-nav{display:none!important}
+ .site-header .menu-btn{display:flex!important}
+ .site-header .mobile-menu{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));background:#490d23;padding:12px 13px;gap:7px;border-top:1px solid #bb884a}
+ .site-header .mobile-menu a{display:flex;align-items:center;gap:8px;padding:12px;color:#ffe4c2;border:1px solid #d2a35b40;border-radius:4px;font-size:13px}
+}
+@media(max-width:700px){
+ .wedding-live-section{padding:53px 0 62px}
+ .wedding-live-intro{margin-bottom:20px;padding:0 5px}
+ .live-player-frame{border-width:3px;outline-offset:2px;border-radius:9px}
+ .live-player-cover{padding:12px 9px}
+ .live-player-cover::before{inset:6px}
+ .live-symbol{width:38px;height:38px;margin-bottom:5px}
+ .live-symbol svg{width:23px;height:23px}
+ .live-cover-top{font-size:8px;letter-spacing:.5px}
+ .live-player-cover h3{font-size:clamp(24px,5.8vw,40px);margin:5px 0 1px}
+ .live-player-cover p{font-size:clamp(12px,3.2vw,17px);margin:3px 0 7px;line-height:1.13}
+ .live-play-button{min-height:35px;font-size:11px;padding:5px 12px}
+ .live-play-button svg{width:15px;height:15px}
+ .live-soon-label{font-size:10px;padding:5px 10px}
+ .live-actions{margin-top:22px;gap:9px}
+ .live-expand-button,.live-youtube-button{font-size:11px;min-height:43px;padding:10px 12px}
+ .live-fullscreen-overlay{gap:9px;padding-inline:8px}
+ .live-fullscreen-video{width:100%;max-height:calc(100dvh - 185px)}
+ .phone-quick-tabs{grid-template-columns:repeat(7,minmax(0,1fr))!important}
+ .phone-quick-tabs a{font-size:clamp(8px,2.25vw,10px)!important;gap:3px!important;padding:5px 0 3px!important}
+ .phone-quick-tabs a svg{width:18px!important;height:18px!important;flex-basis:18px!important}
+}
+@media(max-width:365px){.phone-quick-tabs a{font-size:8px!important}}
