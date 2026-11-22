@@ -1108,12 +1108,6 @@ html,body{max-width:100%;overflow-x:clip}
 .live-actions{display:flex;justify-content:center;align-items:center;gap:15px;flex-wrap:wrap;margin:28px auto 0}
 .live-expand-button{color:#4d152c;border:1px solid #f8dc97;background:linear-gradient(120deg,#ffedae,#e7b75a)}
 .live-youtube-button{background:#5c0c28;border:1px solid #e1b464;color:#ffe9bd}
-.live-small-note{color:#d9ba9f;font:500 14px/1.35 var(--serif);margin:13px auto 0}
-.live-fullscreen-overlay{position:fixed;inset:0;z-index:2000;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:14px;background:#10040d;color:#ffe9c5;padding:calc(12px + env(safe-area-inset-top,0px)) 15px calc(13px + env(safe-area-inset-bottom,0px))}
-.live-fullscreen-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;width:min(100%,1500px);font:700 clamp(15px,2vw,22px) var(--serif)}
-.live-fullscreen-bar button{display:flex;align-items:center;gap:8px;color:#ffefc8;background:#5a1430;border:1px solid #daab64;border-radius:9px;padding:8px 12px}
-.live-fullscreen-video{width:min(100%,1500px);aspect-ratio:16/9;max-height:calc(100dvh - 145px);background:#000;border:2px solid #d0a558;border-radius:8px;overflow:hidden}
-.live-fullscreen-youtube{display:inline-flex;align-items:center;gap:8px;color:#f9ce77;font:700 13px var(--sans)}
 /* Seven bottom tabs still fit one row on phones. The full menu keeps full titles. */
 @media(max-width:1050px) and (min-width:701px){
  .site-header .desktop-nav{display:none!important}
@@ -1137,10 +1131,50 @@ html,body{max-width:100%;overflow-x:clip}
  .live-soon-label{font-size:10px;padding:5px 10px}
  .live-actions{margin-top:22px;gap:9px}
  .live-expand-button,.live-youtube-button{font-size:11px;min-height:43px;padding:10px 12px}
- .live-fullscreen-overlay{gap:9px;padding-inline:8px}
- .live-fullscreen-video{width:100%;max-height:calc(100dvh - 185px)}
  .phone-quick-tabs{grid-template-columns:repeat(7,minmax(0,1fr))!important}
  .phone-quick-tabs a{font-size:clamp(8px,2.25vw,10px)!important;gap:3px!important;padding:5px 0 3px!important}
  .phone-quick-tabs a svg{width:18px!important;height:18px!important;flex-basis:18px!important}
 }
 @media(max-width:365px){.phone-quick-tabs a{font-size:8px!important}}
+
+
+/* v9: Unobstructed native fullscreen on desktop, Android, and supported tablets. */
+.live-player-frame{isolation:isolate}
+.live-player-frame>.live-embedded-player{
+ position:absolute;inset:0;width:100%;height:100%;border:0;display:block;
+ background:#000;touch-action:manipulation;
+}
+/* The iframe itself gets native fullscreen in browsers supporting it. */
+.live-embedded-player:fullscreen,
+.live-embedded-player:-webkit-full-screen{
+ position:fixed!important;inset:0!important;display:block!important;
+ width:100vw!important;height:100vh!important;height:100dvh!important;
+ max-width:none!important;max-height:none!important;aspect-ratio:auto!important;
+ margin:0!important;padding:0!important;border:0!important;border-radius:0!important;
+ outline:0!important;box-shadow:none!important;background:#000!important;
+}
+/* Fallback: browser makes the frame fullscreen instead of the iframe. */
+.live-player-frame:fullscreen,
+.live-player-frame:-webkit-full-screen{
+ position:fixed!important;inset:0!important;
+ width:100vw!important;height:100vh!important;height:100dvh!important;
+ max-width:none!important;max-height:none!important;aspect-ratio:auto!important;
+ margin:0!important;padding:0!important;border:0!important;border-radius:0!important;
+ outline:0!important;box-shadow:none!important;overflow:visible!important;background:#000!important;
+}
+.live-player-frame:fullscreen>.live-embedded-player,
+.live-player-frame:-webkit-full-screen>.live-embedded-player{
+ position:absolute!important;inset:0!important;
+ width:100%!important;height:100%!important;aspect-ratio:auto!important;
+ border:0!important;border-radius:0!important;
+}
+.live-embedded-player::backdrop,.live-player-frame::backdrop{background:#000}
+@media(max-width:480px){
+ /* Keep the embedded YouTube controls comfortably tappable before expansion. */
+ .live-player-frame{aspect-ratio:auto;height:max(205px, calc((100vw - 32px) * 9 / 16));}
+ .live-player-frame>.live-embedded-player{height:100%;}
+}
+@media(max-width:700px){
+ .live-actions{gap:10px;margin-top:19px;}
+ .live-expand-button,.live-youtube-button{min-height:44px;line-height:1.2;}
+}

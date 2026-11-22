@@ -38,16 +38,16 @@
   // Use the exact Share > Embed player URL supplied by the stream owner.
   // YouTube's si token is preserved; HTTP Referer is sent via the iframe policy.
   // The Cloudflare Pages response also sets strict-origin-when-cross-origin.
-  const liveEmbedUrl=liveVideoId?'https://www.youtube.com/embed/'+liveVideoId+'?si=RrZ0RaAnFThISiH0':'';
+  const liveEmbedUrl=liveVideoId?'https://www.youtube.com/embed/'+liveVideoId+'?si=RrZ0RaAnFThISiH0&playsinline=1&controls=1&fs=1':'';
 
  const nav=[
   {target:'home',label:'Home',icon:'home'},
   {target:'couple',label:'Bride & Groom',icon:'people'},
   {target:'events',label:'Wedding & Reception',icon:'calendar'},
-  {target:'venue',label:'Venue',icon:'pin'},
-  {target:'invitation',label:'Invitation',icon:'letter'},
   {target:'live',label:'Wedding Live',icon:'video'},
-  {target:'gallery',label:'Glimpse',icon:'photo'}
+  {target:'venue',label:'Venue',icon:'pin'},
+  {target:'gallery',label:'Glimpse',icon:'photo'},
+  {target:'invitation',label:'Invitation',icon:'letter'}
  ];
  const shareText='With our families’ blessings, we joyfully invite you to celebrate the wedding of Aravind Vas & Vijita Sagari!\n\nWedding: Thursday, 26 November 2026, 8:33 PM IST\nC M Convention Hall, Tanuku\n\nReception: Saturday, 28 November 2026, 11:30 AM IST\nSubhamasthu Function Hall, Inkollu\n\nYour presence and blessings mean the world to us.';
  const glyphs={
@@ -76,14 +76,19 @@
  const now=()=>{let n=Math.max(0,target-Date.now());return {days:Math.floor(n/86400000),hours:Math.floor(n%86400000/3600000),minutes:Math.floor(n%3600000/60000),seconds:Math.floor(n%60000/1000),done:n===0}};
  const app=createApp({
   components:{Ico},
-  data(){return {nav,events:details,gallery:imgs,galleryIndex:0,selectedImage:0,menuOpen:false,modalOpen:false,galleryModal:false,liveReady:Boolean(liveVideoId),liveUrl:liveWatchUrl,liveEmbedUrl,liveActive:false,liveExpanded:false,counter:now(),toast:'',progress:0,navSelected:'home',timer:null,noticeTimer:null,observer:null,previousFocus:null}},
+  data(){return {nav,events:details,gallery:imgs,galleryIndex:0,selectedImage:0,menuOpen:false,modalOpen:false,galleryModal:false,liveReady:Boolean(liveVideoId),liveUrl:liveWatchUrl,liveEmbedUrl,liveActive:false,counter:now(),toast:'',progress:0,navSelected:'home',timer:null,noticeTimer:null,observer:null,previousFocus:null}},
   computed:{
    countdown(){return [{label:'Days',value:this.counter.days},{label:'Hours',value:String(this.counter.hours).padStart(2,'0')},{label:'Minutes',value:String(this.counter.minutes).padStart(2,'0')},{label:'Seconds',value:String(this.counter.seconds).padStart(2,'0')}]},
    visibleGallery(){return Array.from({length:3},(_,n)=>this.gallery[(this.galleryIndex+n)%this.gallery.length])},
    isPublic(){return location.protocol==='https:' && !/(localhost|127\.0\.0\.1)/.test(location.hostname)},
    publicUrl(){return this.isPublic ? location.href.split('#')[0] : ''},
    cardSrc(){return window.__INVITE_DATA || './assets/original-invitation.png'},
-   whatsappUrl(){return 'https://wa.me/?text='+encodeURIComponent(shareText+(this.publicUrl?'\n\nWebsite: '+this.publicUrl:''))}
+   whatsappUrl(){return 'https://wa.me/?text='+encodeURIComponent(shareText+(this.publicUrl?'\n\nWebsite: '+this.publicUrl:''))},
+   canFullscreenIframe(){
+     const element=document.documentElement;
+     const supported=Boolean(document.fullscreenEnabled || document.webkitFullscreenEnabled);
+     return supported && Boolean(element.requestFullscreen || element.webkitRequestFullscreen);
+   }
   },
   mounted(){
    this.timer=setInterval(()=>{this.counter=now()},1000);
@@ -113,12 +118,30 @@
   },
   beforeUnmount(){clearInterval(this.timer);clearTimeout(this.noticeTimer);window.removeEventListener('scroll',this.handleScroll);window.removeEventListener('keydown',this.handleKey);this.observer?.disconnect();this.preloadObserver?.disconnect();document.body.style.overflow=''},
   methods:{
-   handleScroll(){let m=Math.max(1,document.documentElement.scrollHeight-innerHeight);this.progress=Math.round(scrollY/m*100);let ids=['gallery','live','invitation','venue','events','couple','home'];this.navSelected=ids.find(id=>{let e=document.getElementById(id);return e && e.getBoundingClientRect().top<Math.min(innerHeight*.45,250)})||'home'},
-   handleKey(e){if(e.key==='Escape'){this.closeModal();this.closeLive();this.galleryModal=false;this.menuOpen=false}if(this.galleryModal&&e.key==='ArrowRight')this.nextGallery();if(this.galleryModal&&e.key==='ArrowLeft')this.prevGallery();if(e.key==='Tab'&&this.modalOpen){let nodes=Array.from(document.querySelectorAll('.invitation-modal button'));if(!nodes.length)return;if(e.shiftKey&&document.activeElement===nodes[0]){e.preventDefault();nodes[nodes.length-1].focus()}else if(!e.shiftKey&&document.activeElement===nodes[nodes.length-1]){e.preventDefault();nodes[0].focus()}}},
+   handleScroll(){let m=Math.max(1,document.documentElement.scrollHeight-innerHeight);this.progress=Math.round(scrollY/m*100);let ids=['invitation','gallery','venue','live','events','couple','home'];this.navSelected=ids.find(id=>{let e=document.getElementById(id);return e && e.getBoundingClientRect().top<Math.min(innerHeight*.45,250)})||'home'},
+   handleKey(e){if(e.key==='Escape'){this.closeModal();this.galleryModal=false;this.menuOpen=false}if(this.galleryModal&&e.key==='ArrowRight')this.nextGallery();if(this.galleryModal&&e.key==='ArrowLeft')this.prevGallery();if(e.key==='Tab'&&this.modalOpen){let nodes=Array.from(document.querySelectorAll('.invitation-modal button'));if(!nodes.length)return;if(e.shiftKey&&document.activeElement===nodes[0]){e.preventDefault();nodes[nodes.length-1].focus()}else if(!e.shiftKey&&document.activeElement===nodes[nodes.length-1]){e.preventDefault();nodes[0].focus()}}},
    navClick(id){this.menuOpen=false;this.navSelected=id},
     playLive(){if(!this.liveReady)return;this.liveActive=true;},
-    expandLive(){if(!this.liveReady)return;this.previousLiveFocus=document.activeElement;this.liveExpanded=true;this.liveActive=true;document.body.style.overflow='hidden';this.$nextTick(()=>this.$refs.closeLiveButton?.focus())},
-    closeLive(){if(!this.liveExpanded)return;this.liveExpanded=false;this.liveActive=false;document.body.style.overflow='';this.$nextTick(()=>this.previousLiveFocus?.focus?.())},
+    expandLive(){
+      // Give the iframe the full screen so YouTube's actual settings, timeline,
+      // and other native controls remain unobstructed. Use the enclosing frame
+      // only if the browser rejects fullscreen on the embedded iframe.
+      const player=this.$refs.livePlayer;
+      const frame=player?.closest('.live-player-frame');
+      if(!player || !this.canFullscreenIframe){
+        return;
+      }
+      const request=(element)=>{
+        if(!element)return Promise.reject(new Error('Fullscreen not supported'));
+        const fn=element.requestFullscreen || element.webkitRequestFullscreen;
+        if(!fn)return Promise.reject(new Error('Fullscreen not supported'));
+        try{return Promise.resolve(fn.call(element));}
+        catch(error){return Promise.reject(error);}
+      };
+      request(player).catch(()=>request(frame)).catch(()=>{
+        // If fullscreen is unsupported, keep the embedded player usable.
+      });
+    },
    openModal(){this.previousFocus=document.activeElement;this.modalOpen=true;this.menuOpen=false;document.body.style.overflow='hidden';this.$nextTick(()=>document.querySelector('.modal-close')?.focus())},
    closeModal(){if(!this.modalOpen)return;this.modalOpen=false;document.body.style.overflow='';this.$nextTick(()=>this.previousFocus?.focus?.())},
    openGallery(i){this.selectedImage=i;this.galleryModal=true},
@@ -233,21 +256,6 @@
          </div>
        </section>
 
-       <section id="venue" class="section venue-section">
-         <div class="container"><div class="section-title reveal"><span>With love, we await your presence</span><h2>Our <em>Venues</em></h2><div class="gold-divider"><span>❀</span></div></div>
-           <div class="venue-grid"><article v-for="event in events" :key="event.id" class="venue-card reveal"><span class="venue-type">{{event.short}} Venue</span><div class="venue-layout"><div class="venue-description"><div class="venue-pin"><Ico name="pin" :size="26"/></div><h3>{{event.venue}},<br>{{event.city}}</h3><div class="venue-ornament">──── ❀ ────</div><span class="venue-when">{{event.day}} {{event.month}} · {{event.time}} IST</span></div><div class="venue-photo"><img :src="event.img" :alt="'AI illustrative rendering representing '+event.venue+' (not an actual venue photograph)'" width="1280" height="720" loading="lazy" decoding="async"/></div></div><a :href="event.map" target="_blank" rel="noopener noreferrer" class="map-button"><Ico name="pin" :size="18"/> View on Google Maps <Ico name="right" :size="17"/></a></article></div>
-         </div>
-       </section>
-
-       <section id="invitation" class="section invitation-section"><div class="container invitation-grid">
-          <div class="invite-copy reveal"><div class="eyebrow">FROM OUR HEARTS TO YOURS</div><h2>A personal<br><em>invitation</em></h2><div class="invite-lotus" aria-hidden="true"><span></span>❀<span></span></div>
-             <p>Every unforgettable celebration begins with an invitation. Here is ours, lovingly shared with you and your family.</p>
-             <div class="heart-note"><Ico name="heart" :size="26"/><span>We can't wait to celebrate this beautiful moment with you.</span></div>
-             <div class="invite-buttons"><button type="button" @click="openModal" class="cta-wine">VIEW FULL INVITATION <Ico name="right" :size="20"/></button><button type="button" @click="downloadCard" class="cta-download"><Ico name="download" :size="20"/> DOWNLOAD CARD</button></div>
-          </div>
-          <button class="invitation-photo reveal" type="button" @click="openModal" aria-label="View the complete original invitation card"><img src="./assets/invitation-preview.webp" alt="Original royal maroon and ivory wedding invitation image supplied by the family" width="1060" height="1484" loading="lazy" decoding="async"/><span>Tap to view full card</span></button>
-       </div></section>
-
         <section id="live" class="section wedding-live-section" aria-labelledby="wedding-live-title">
           <div class="container wedding-live-container">
             <div class="section-title reveal">
@@ -257,11 +265,11 @@
             </div>
             <p class="wedding-live-intro">Celebrate with Aravind &amp; Vijita, even from miles away.</p>
             <div class="live-player-frame" aria-label="Wedding livestream video area">
-              <iframe v-if="liveActive &amp;&amp; !liveExpanded &amp;&amp; liveReady" class="live-embedded-player"
+              <iframe v-if="liveActive &amp;&amp; liveReady" ref="livePlayer" class="live-embedded-player"
                 :src="liveEmbedUrl" title="Aravind and Vijita wedding livestream"
                 loading="eager" referrerpolicy="strict-origin-when-cross-origin"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
-                allowfullscreen></iframe>
+                allowfullscreen webkitallowfullscreen></iframe>
               <div v-else class="live-player-cover">
                 <span class="live-symbol"><Ico name="video" :size="42"/></span>
                 <div class="live-cover-top">26 November 2026 · 8:33 PM IST</div>
@@ -273,11 +281,18 @@
               </div>
             </div>
             <div v-if="liveReady" class="live-actions">
-              <button type="button" class="live-expand-button" @click="expandLive"><Ico name="expand" :size="20"/> Full-screen player</button>
+              <button v-if="canFullscreenIframe &amp;&amp; liveActive" type="button" class="live-expand-button" @click="expandLive" aria-label="Enter fullscreen wedding livestream"><Ico name="expand" :size="20"/> Full-screen player</button>
+              <a v-if="!canFullscreenIframe" class="live-expand-button" :href="liveUrl" target="_blank" rel="noopener noreferrer"><Ico name="expand" :size="20"/> Fullscreen on YouTube</a>
               <a class="live-youtube-button" :href="liveUrl" target="_blank" rel="noopener noreferrer"><Ico name="video" :size="19"/> Watch on YouTube <Ico name="right" :size="17"/></a>
             </div>
           </div>
         </section>
+
+       <section id="venue" class="section venue-section">
+         <div class="container"><div class="section-title reveal"><span>With love, we await your presence</span><h2>Our <em>Venues</em></h2><div class="gold-divider"><span>❀</span></div></div>
+           <div class="venue-grid"><article v-for="event in events" :key="event.id" class="venue-card reveal"><span class="venue-type">{{event.short}} Venue</span><div class="venue-layout"><div class="venue-description"><div class="venue-pin"><Ico name="pin" :size="26"/></div><h3>{{event.venue}},<br>{{event.city}}</h3><div class="venue-ornament">──── ❀ ────</div><span class="venue-when">{{event.day}} {{event.month}} · {{event.time}} IST</span></div><div class="venue-photo"><img :src="event.img" :alt="'AI illustrative rendering representing '+event.venue+' (not an actual venue photograph)'" width="1280" height="720" loading="lazy" decoding="async"/></div></div><a :href="event.map" target="_blank" rel="noopener noreferrer" class="map-button"><Ico name="pin" :size="18"/> View on Google Maps <Ico name="right" :size="17"/></a></article></div>
+         </div>
+       </section>
 
        <section id="gallery" class="section glimpse-section"><div class="container"><div class="glimpse-card reveal"><i class="card-corner tl"></i><i class="card-corner tr"></i><i class="card-corner bl"></i><i class="card-corner br"></i>
          <h2 class="glimpse-script"><Ico name="camera" :size="34"/><img src="./assets/gallery-heading.webp" width="1680" height="150" alt="" aria-hidden="true" loading="lazy"/><span class="sr-only">Glimpse of Our Togetherness</span></h2>
@@ -287,6 +302,15 @@
          </div><div class="gallery-dots"><button v-for="(entry,i) in gallery" :key="entry.image" type="button" :class="{on:galleryIndex===i}" :aria-label="'Show gallery position '+(i+1)" :aria-pressed="galleryIndex===i" @click="galleryIndex=i"></button></div>
          
        </div></div></section>
+
+       <section id="invitation" class="section invitation-section"><div class="container invitation-grid">
+          <div class="invite-copy reveal"><div class="eyebrow">FROM OUR HEARTS TO YOURS</div><h2>A personal<br><em>invitation</em></h2><div class="invite-lotus" aria-hidden="true"><span></span>❀<span></span></div>
+             <p>Every unforgettable celebration begins with an invitation. Here is ours, lovingly shared with you and your family.</p>
+             <div class="heart-note"><Ico name="heart" :size="26"/><span>We can't wait to celebrate this beautiful moment with you.</span></div>
+             <div class="invite-buttons"><button type="button" @click="openModal" class="cta-wine">VIEW FULL INVITATION <Ico name="right" :size="20"/></button><button type="button" @click="downloadCard" class="cta-download"><Ico name="download" :size="20"/> DOWNLOAD CARD</button></div>
+          </div>
+          <button class="invitation-photo reveal" type="button" @click="openModal" aria-label="View the complete original invitation card"><img src="./assets/invitation-preview.webp" alt="Original royal maroon and ivory wedding invitation image supplied by the family" width="1060" height="1484" loading="lazy" decoding="async"/><span>Tap to view full card</span></button>
+       </div></section>
 
        <section class="closing-section closing-message-only" aria-labelledby="closing-title">
          <div class="closing-flower-corner closing-flower-corner-left" aria-hidden="true"></div>
@@ -300,11 +324,6 @@
      </div>
    </main>
    <footer class="site-footer"><img class="footer-logo" src="./assets/av-monogram.svg" alt="A heart V gold monogram" width="396" height="246" loading="lazy"/><p>Aravind Vas <em>&</em> Vijita Sagari</p><a href="#home" @click="navClick('home')">Back to top ↑</a></footer>
-   <div v-if="liveExpanded &amp;&amp; liveReady" class="live-fullscreen-overlay" role="dialog" aria-modal="true" aria-label="Wedding live full-screen viewer">
-     <div class="live-fullscreen-bar"><span>Wedding Live · Aravind &amp; Vijita</span><button ref="closeLiveButton" type="button" @click="closeLive" aria-label="Close full-screen wedding video"><Ico name="close" :size="25"/> Close</button></div>
-     <div class="live-fullscreen-video"><iframe class="live-embedded-player" :src="liveEmbedUrl" title="Aravind and Vijita wedding livestream full-screen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" allowfullscreen></iframe></div>
-     <a class="live-fullscreen-youtube" :href="liveUrl" target="_blank" rel="noopener noreferrer">Watch on YouTube <Ico name="right" :size="18"/></a>
-   </div>
    <div v-if="toast" class="toast" role="status">{{toast}}</div>
    <div v-if="modalOpen" class="overlay" role="presentation" @click.self="closeModal"><div class="invitation-modal" role="dialog" aria-modal="true" aria-label="Full wedding invitation"><div class="modal-bar"><span>Our personal invitation</span><div><button type="button" @click="downloadCard" aria-label="Download invitation"><Ico name="download" :size="23"/></button><button class="modal-close" type="button" @click="closeModal" aria-label="Close invitation"><Ico name="close" :size="25"/></button></div></div><img :src="cardSrc" alt="Full wedding invitation, including the couple's names and wedding and reception details" width="1060" height="1484"/></div></div>
    <div v-if="galleryModal" class="overlay" role="presentation" @click.self="galleryModal=false"><div class="gallery-modal" role="dialog" aria-modal="true" aria-label="Glimpse of our togetherness photos"><button type="button" class="gallery-close" @click="galleryModal=false" aria-label="Close artwork"><Ico name="close" :size="24"/></button><img :src="gallery[selectedImage].full || gallery[selectedImage].image" :alt="gallery[selectedImage].alt"/><div><button @click="selectedImage=(selectedImage+gallery.length-1)%gallery.length">← Previous</button><button @click="selectedImage=(selectedImage+1)%gallery.length">Next →</button></div></div></div>
