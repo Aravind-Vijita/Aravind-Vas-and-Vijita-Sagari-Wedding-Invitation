@@ -76,7 +76,7 @@
  const now=()=>{let n=Math.max(0,target-Date.now());return {days:Math.floor(n/86400000),hours:Math.floor(n%86400000/3600000),minutes:Math.floor(n%3600000/60000),seconds:Math.floor(n%60000/1000),done:n===0}};
  const app=createApp({
   components:{Ico},
-  data(){return {nav,events:details,gallery:imgs,galleryIndex:0,selectedImage:0,menuOpen:false,modalOpen:false,galleryModal:false,liveReady:Boolean(liveVideoId),liveUrl:liveWatchUrl,liveEmbedUrl,liveActive:false,counter:now(),toast:'',progress:0,navSelected:'home',timer:null,noticeTimer:null,observer:null,previousFocus:null}},
+  data(){return {nav,events:details,gallery:imgs,galleryIndex:0,selectedImage:0,menuOpen:false,modalOpen:false,galleryModal:false,liveReady:Boolean(liveVideoId),liveUrl:liveWatchUrl,liveEmbedUrl,liveActive:false,liveOverlayOpen:false,counter:now(),toast:'',progress:0,navSelected:'home',timer:null,noticeTimer:null,observer:null,previousFocus:null}},
   computed:{
    countdown(){return [{label:'Days',value:this.counter.days},{label:'Hours',value:String(this.counter.hours).padStart(2,'0')},{label:'Minutes',value:String(this.counter.minutes).padStart(2,'0')},{label:'Seconds',value:String(this.counter.seconds).padStart(2,'0')}]},
    visibleGallery(){return Array.from({length:3},(_,n)=>this.gallery[(this.galleryIndex+n)%this.gallery.length])},
@@ -119,18 +119,26 @@
   beforeUnmount(){clearInterval(this.timer);clearTimeout(this.noticeTimer);window.removeEventListener('scroll',this.handleScroll);window.removeEventListener('keydown',this.handleKey);this.observer?.disconnect();this.preloadObserver?.disconnect();document.body.style.overflow=''},
   methods:{
    handleScroll(){let m=Math.max(1,document.documentElement.scrollHeight-innerHeight);this.progress=Math.round(scrollY/m*100);let ids=['invitation','gallery','venue','live','events','couple','home'];this.navSelected=ids.find(id=>{let e=document.getElementById(id);return e && e.getBoundingClientRect().top<Math.min(innerHeight*.45,250)})||'home'},
-   handleKey(e){if(e.key==='Escape'){this.closeModal();this.galleryModal=false;this.menuOpen=false}if(this.galleryModal&&e.key==='ArrowRight')this.nextGallery();if(this.galleryModal&&e.key==='ArrowLeft')this.prevGallery();if(e.key==='Tab'&&this.modalOpen){let nodes=Array.from(document.querySelectorAll('.invitation-modal button'));if(!nodes.length)return;if(e.shiftKey&&document.activeElement===nodes[0]){e.preventDefault();nodes[nodes.length-1].focus()}else if(!e.shiftKey&&document.activeElement===nodes[nodes.length-1]){e.preventDefault();nodes[0].focus()}}},
+   handleKey(e){if(e.key==='Escape'){this.closeModal();this.galleryModal=false;this.menuOpen=false;this.closeLiveOverlay()}if(this.galleryModal&&e.key==='ArrowRight')this.nextGallery();if(this.galleryModal&&e.key==='ArrowLeft')this.prevGallery();if(e.key==='Tab'&&this.modalOpen){let nodes=Array.from(document.querySelectorAll('.invitation-modal button'));if(!nodes.length)return;if(e.shiftKey&&document.activeElement===nodes[0]){e.preventDefault();nodes[nodes.length-1].focus()}else if(!e.shiftKey&&document.activeElement===nodes[nodes.length-1]){e.preventDefault();nodes[0].focus()}}},
    navClick(id){this.menuOpen=false;this.navSelected=id},
     playLive(){if(!this.liveReady)return;this.liveActive=true;},
+    openLiveOverlay(){
+      if(!this.liveReady)return;
+      this.liveActive=true;
+      this.liveOverlayOpen=true;
+      document.body.style.overflow='hidden';
+    },
+    closeLiveOverlay(){
+      if(!this.liveOverlayOpen)return;
+      this.liveOverlayOpen=false;
+      if(!this.modalOpen) document.body.style.overflow='';
+    },
     expandLive(){
-      // Give the iframe the full screen so YouTube's actual settings, timeline,
-      // and other native controls remain unobstructed. Use the enclosing frame
-      // only if the browser rejects fullscreen on the embedded iframe.
+      if(!this.liveReady)return;
+      this.liveActive=true;
+      const mobileView=window.matchMedia('(max-width: 700px)').matches;
       const player=this.$refs.livePlayer;
       const frame=player?.closest('.live-player-frame');
-      if(!player || !this.canFullscreenIframe){
-        return;
-      }
       const request=(element)=>{
         if(!element)return Promise.reject(new Error('Fullscreen not supported'));
         const fn=element.requestFullscreen || element.webkitRequestFullscreen;
@@ -138,8 +146,12 @@
         try{return Promise.resolve(fn.call(element));}
         catch(error){return Promise.reject(error);}
       };
+      if(mobileView){
+        this.openLiveOverlay();
+        return;
+      }
       request(player).catch(()=>request(frame)).catch(()=>{
-        // If fullscreen is unsupported, keep the embedded player usable.
+        this.openLiveOverlay();
       });
     },
    openModal(){this.previousFocus=document.activeElement;this.modalOpen=true;this.menuOpen=false;document.body.style.overflow='hidden';this.$nextTick(()=>document.querySelector('.modal-close')?.focus())},
@@ -281,9 +293,18 @@
               </div>
             </div>
             <div v-if="liveReady" class="live-actions">
-              <button v-if="canFullscreenIframe &amp;&amp; liveActive" type="button" class="live-expand-button" @click="expandLive" aria-label="Enter fullscreen wedding livestream"><Ico name="expand" :size="20"/> Full-screen player</button>
-              <a v-if="!canFullscreenIframe" class="live-expand-button" :href="liveUrl" target="_blank" rel="noopener noreferrer"><Ico name="expand" :size="20"/> Fullscreen on YouTube</a>
+              <button type="button" class="live-expand-button" @click="expandLive" aria-label="Enter fullscreen wedding livestream"><Ico name="expand" :size="20"/> Fullscreen</button>
               <a class="live-youtube-button" :href="liveUrl" target="_blank" rel="noopener noreferrer"><Ico name="video" :size="19"/> Watch on YouTube <Ico name="right" :size="17"/></a>
+            </div>
+            <div v-if="liveOverlayOpen" class="live-overlay" role="dialog" aria-modal="true" aria-label="Wedding livestream fullscreen" @click.self="closeLiveOverlay">
+              <button type="button" class="live-overlay-close" @click="closeLiveOverlay" aria-label="Close fullscreen livestream"><Ico name="close" :size="23"/></button>
+              <div class="live-overlay-stage">
+                <iframe class="live-overlay-player"
+                  :src="liveEmbedUrl" title="Aravind and Vijita wedding livestream fullscreen"
+                  loading="eager" referrerpolicy="strict-origin-when-cross-origin"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
+                  allowfullscreen webkitallowfullscreen></iframe>
+              </div>
             </div>
           </div>
         </section>
