@@ -1198,3 +1198,24 @@ html,body{max-width:100%;overflow-x:clip}
   .countdown-fresh-flowers-left{left:-6px!important}
   .countdown-fresh-flowers-right{right:-6px!important}
 }
+
+
+/* V13: Desktop/laptop Wedding Live player sized to fit smaller screens.
+   Mobile (700px and below), fullscreen video, and external live viewer remain unchanged. */
+@media (min-width:701px){
+  .wedding-live-container .live-player-frame:not(:fullscreen):not(:-webkit-full-screen){
+    width:min(100%,760px);
+    max-width:760px;
+    height:auto;
+    aspect-ratio:16 / 9;
+  }
+}
+@media (min-width:701px) and (max-height:700px){
+  .wedding-live-container .live-player-frame:not(:fullscreen):not(:-webkit-full-screen){width:min(100%,700px)}
+}
+@media (min-width:701px) and (max-height:600px){
+  .wedding-live-container .live-player-frame:not(:fullscreen):not(:-webkit-full-screen){width:min(100%,600px)}
+}
+@media (min-width:701px) and (max-height:500px){
+  .wedding-live-container .live-player-frame:not(:fullscreen):not(:-webkit-full-screen){width:min(100%,490px)}
+}
