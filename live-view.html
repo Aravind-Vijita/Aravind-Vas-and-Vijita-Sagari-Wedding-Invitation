@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=yes">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="theme-color" content="#090608">
+<title>Wedding Live — Aravind Vas &amp; Vijita Sagari</title>
+<style>
+  :root{color-scheme:dark}
+  *{box-sizing:border-box}
+  html,body{margin:0;width:100%;height:100%;height:100dvh;overflow:hidden;background:#090608;overscroll-behavior:none}
+  body{font:14px system-ui,-apple-system,'Segoe UI',sans-serif}
+  main{position:fixed;inset:0;display:flex;justify-content:center;align-items:center;background:#090608;overflow:hidden}
+  .screen{width:min(100vw,calc((100dvh - 12px)*16/9));aspect-ratio:16/9;max-height:calc(100dvh - 12px);position:relative;background:#000}
+  iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block;background:#000}
+  .back{position:fixed;z-index:5;left:max(12px,env(safe-area-inset-left));top:max(12px,env(safe-area-inset-top));width:43px;height:43px;border:1px solid rgba(236,204,132,.55);border-radius:50%;display:flex;justify-content:center;align-items:center;background:rgba(50,8,27,.88);color:#fff2d9;text-decoration:none;font-size:29px;line-height:1;box-shadow:0 2px 15px #0007}
+  .back:focus-visible{outline:3px solid #ffdc8f;outline-offset:2px}
+  .unavailable{position:absolute;inset:0;display:none;align-items:center;justify-content:center;color:#fff0d0;text-align:center;padding:24px}
+  @media(orientation:portrait){.screen{width:100vw;max-height:none}}
+  @media(orientation:landscape){.back{width:36px;height:36px;font-size:25px;top:max(6px,env(safe-area-inset-top));left:max(6px,env(safe-area-inset-left))}}
+</style>
+<script defer src="./live-config.js?v=wedding-live-true-mobile-view-v12"></script>
+</head>
+<body>
+<main role="main">
+  <a class="back" href="./#live" aria-label="Back to wedding website">&times;</a>
+  <div class="screen">
+    <iframe id="live-player" title="Aravind and Vijita wedding livestream"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
+      allowfullscreen webkitallowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    <div class="unavailable" id="unavailable">Livestream unavailable</div>
+  </div>
+</main>
+<script>
+window.addEventListener('DOMContentLoaded',function(){
+  'use strict';
+  var raw=String(window.WEDDING_LIVE_URL||'').trim();
+  var id='';
+  try{
+    var u=new URL(raw), path=u.pathname.split('/').filter(Boolean);
+    if(u.protocol==='https:' && (u.hostname==='youtu.be'||u.hostname==='www.youtu.be'))id=path[0]||'';
+    else if(u.protocol==='https:' && ['youtube.com','www.youtube.com','m.youtube.com','www.youtube-nocookie.com','youtube-nocookie.com'].includes(u.hostname)){
+      id=path[0]==='watch'?(u.searchParams.get('v')||''):['live','embed','shorts'].includes(path[0])?(path[1]||''):'';
+    }
+  }catch(e){}
+  var frame=document.getElementById('live-player');
+  if(!/^[a-zA-Z0-9_-]{11}$/.test(id)){
+    frame.remove();document.getElementById('unavailable').style.display='flex';return;
+  }
+  var isIPhone=/iPhone|iPod/.test(navigator.userAgent);
+  // iOS native video fullscreen is owned by YouTube/WebKit; play inline is
+  // disabled to allow the player to present video fullscreen on iPhone.
+  frame.src='https://www.youtube.com/embed/'+encodeURIComponent(id)+'?si=RrZ0RaAnFThISiH0&controls=1&fs=1&playsinline='+(isIPhone?'0':'1');
+});
+</script>
+</body>
+</html>
